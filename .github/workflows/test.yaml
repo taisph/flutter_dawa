@@ -1,0 +1,46 @@
+name: Test
+on:
+  pull_request:
+  push:
+    branches:
+    - main
+jobs:
+  test:
+    name: Test on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+    steps:
+      - name: Clone Flutter repository
+        uses: actions/checkout@v2
+        with:
+          repository: flutter/flutter
+          ref: stable
+          path: flutter
+          fetch-depth: 0
+      - name: Setup Flutter PATH for Ubuntu/macOS
+        if: startsWith(matrix.os, 'ubuntu') || startsWith(matrix.os, 'macOS')
+        run: echo "$GITHUB_WORKSPACE/flutter/bin" >> $GITHUB_PATH
+      - name: Setup Flutter PATH for Windows
+        if: startsWith(matrix.os, 'windows')
+        run: echo "${env:GITHUB_WORKSPACE}\flutter\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+      - name: Run Flutter doctor
+        run: flutter doctor -v
+
+      - name: Clone our repository
+        uses: actions/checkout@v2
+        with:
+          path: src
+      - name: Get packages for the Flutter project
+        run: flutter pub get
+        working-directory: src
+      - name: Analyze Dart code
+        run: flutter analyze
+        working-directory: src
+      - name: Ensure Dart code is formatted correctly
+        run: flutter format --set-exit-if-changed --dry-run .
+        working-directory: src
+      - name: Run Flutter unit tests
+        run: flutter test
+        working-directory: src
