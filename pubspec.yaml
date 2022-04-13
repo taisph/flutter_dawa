@@ -1,0 +1,19 @@
+name: dawa
+description: Flutter widget implementing DAWA, Danmarks Adressers Web API
+version: 0.0.0-alpha
+repository: https://github.com/taisph/flutter_dawi
+
+environment:
+  sdk: ">=2.16.2 <3.0.0"
+  flutter: ">=2.10.0-0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^1.0.0
+
+flutter:
