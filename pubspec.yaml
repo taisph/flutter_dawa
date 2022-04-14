@@ -1,6 +1,6 @@
 name: dawa
 description: Flutter widget implementing DAWA, Danmarks Adressers Web API
-version: 0.0.1
+version: 0.0.1+1
 repository: https://github.com/taisph/flutter_dawa
 
 environment:
